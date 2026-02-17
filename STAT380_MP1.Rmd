@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(ggplot2)
 library(readxl)
+library(lubridate)
 
 ```
 
@@ -57,7 +58,16 @@ unlink(dest_file)
 ## Proposed Questions
 
 
-##
+## Question 1: Does Player Performance Change Over Time?
+
+
+## Question 2: Our Question
+
+
+
+
+
+
 
 
 
