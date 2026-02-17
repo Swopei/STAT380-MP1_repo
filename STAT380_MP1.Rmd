@@ -22,9 +22,33 @@ library(readxl)
 
 ## Reading in Data Set
 ```{r}
+games_url <- "https://raw.githubusercontent.com/Swopei/STAT380-MP1_repo/main/data/CODGames2_mp.xlsx"
+games_tmp <- tempfile(fileext = ".xlsx")
+download.file(games_url, destfile = games_tmp, mode = "wb")
+Games <- read_excel(games_tmp)
 
 ```
 
+This solution was found using Google Gemini, the prompt used was, "How can a .xlsx file be read into R from an url?"
+
+Gemini generation the following as one possible solution: 
+
+library(readxl)
+
+\# 1. Define the URL
+url <- "https://example.com/data.xlsx"
+
+\# 2. Create a temporary file path
+dest_file <- tempfile(fileext = ".xlsx")
+
+\# 3. Download the file (CRITICAL: use mode = "wb")
+download.file(url, destfile = dest_file, mode = "wb")
+
+\# 4. Read the file
+df <- read_excel(dest_file)
+
+\# Optional: clean up the temp file
+unlink(dest_file) 
 
 
 ## Data Exploration
