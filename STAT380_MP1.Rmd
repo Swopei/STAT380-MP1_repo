@@ -1,0 +1,39 @@
+---
+title: "STAT380_MP1"
+author:
+  - name: Isaac Swope
+  - name: Andrew
+date: "February 22, 2026"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Front Matter
+```{r}
+# Libraries
+library(dplyr)
+library(ggplot2)
+library(readxl)
+
+```
+
+## Reading in Data Set
+```{r}
+
+```
+
+
+
+## Data Exploration
+
+
+## Proposed Questions
+
+
+##
+
+
+
