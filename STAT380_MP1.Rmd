@@ -18,6 +18,12 @@ library(dplyr)
 library(ggplot2)
 library(readxl)
 library(lubridate)
+library(knitr)
+
+# Functions
+countNA <- function(col){
+  return(sum(is.na(col)))
+}
 
 ```
 
@@ -53,6 +59,31 @@ unlink(dest_file)
 
 
 ## Data Exploration
+This data set contains 27 columns and 211 rows. 
+
+The variable FullPartial is a categorical variable
+```{r}
+levels(as.factor(Games$FullPartial)) #gets categories
+```
+
+FullPartial has two categories: "Full" and "Partial"
+
+```{r}
+countNA(as.factor(Games$FullPartial)) #gets NA count
+```
+
+FullPartial has no NAs
+
+```{r}
+Games_FP <- Games %>%
+  group_by(FullPartial) %>%
+  summarize(
+     count = sum(FullPartial == FullPartial),
+     percent = paste0(round(sum(FullPartial == FullPartial)/nrow(Games)*100, 2), "%")
+  )
+
+kable(Games_FP)
+```
 
 
 ## Proposed Questions
