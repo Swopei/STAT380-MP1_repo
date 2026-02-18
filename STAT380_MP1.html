@@ -370,7 +370,19 @@ library(dplyr)</code></pre>
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(ggplot2)
-library(readxl)</code></pre>
+library(readxl)
+library(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre class="r"><code>library(knitr)
+
+# Functions
+countNA &lt;- function(col){
+  return(sum(is.na(col)))
+}</code></pre>
 </div>
 <div id="reading-in-data-set" class="section level2">
 <h2>Reading in Data Set</h2>
@@ -392,12 +404,52 @@ destfile = dest_file, mode = “wb”)</p>
 </div>
 <div id="data-exploration" class="section level2">
 <h2>Data Exploration</h2>
+<p>This data set contains 27 columns and 211 rows.</p>
+<p>The variable FullPartial is a categorical variable</p>
+<pre class="r"><code>levels(as.factor(Games$FullPartial)) #gets categories</code></pre>
+<pre><code>## [1] &quot;Full&quot;    &quot;Partial&quot;</code></pre>
+<p>FullPartial has two categories: “Full” and “Partial”</p>
+<pre class="r"><code>countNA(as.factor(Games$FullPartial)) #gets NA count</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>FullPartial has no NAs</p>
+<pre class="r"><code>Games_FP &lt;- Games %&gt;%
+  group_by(FullPartial) %&gt;%
+  summarize(
+     count = sum(FullPartial == FullPartial),
+     percent = paste0(round(sum(FullPartial == FullPartial)/nrow(Games)*100, 2), &quot;%&quot;)
+  )
+
+kable(Games_FP)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">FullPartial</th>
+<th align="right">count</th>
+<th align="left">percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Full</td>
+<td align="right">191</td>
+<td align="left">90.52%</td>
+</tr>
+<tr class="even">
+<td align="left">Partial</td>
+<td align="right">20</td>
+<td align="left">9.48%</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="proposed-questions" class="section level2">
 <h2>Proposed Questions</h2>
 </div>
-<div id="section" class="section level2">
-<h2></h2>
+<div id="question-1-does-player-performance-change-over-time" class="section level2">
+<h2>Question 1: Does Player Performance Change Over Time?</h2>
+</div>
+<div id="question-2-our-question" class="section level2">
+<h2>Question 2: Our Question</h2>
 </div>
 
 
