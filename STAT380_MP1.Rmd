@@ -1,18 +1,19 @@
 ---
 title: "STAT380_MP1"
 author:
-  - name: Isaac Swope
-  - name: Andrew
+- name: Isaac Swope
+- name: Andrew
 date: "February 22, 2026"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE)
 ```
 
 ## Front Matter
-```{r}
+```{r, message = FALSE}
 # Libraries
 library(dplyr)
 library(ggplot2)
@@ -33,7 +34,6 @@ games_url <- "https://raw.githubusercontent.com/Swopei/STAT380-MP1_repo/main/dat
 games_tmp <- tempfile(fileext = ".xlsx")
 download.file(games_url, destfile = games_tmp, mode = "wb")
 Games <- read_excel(games_tmp)
-
 ```
 
 This solution was found using Google Gemini, the prompt used was, "How can a .xlsx file be read into R from an url?"
@@ -83,7 +83,40 @@ Games_FP <- Games %>%
   )
 
 kable(Games_FP)
+
+ggplot(data = Games_FP,
+        mapping = aes(x = "", y = count, fill = FullPartial)
+        ) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  theme_void() +
+    geom_text(aes(label = percent), position = position_stack(vjust = 0.5)) +
+  labs(subtitle = "n = 211")
 ```
+
+From the above table and pie chart, we can see that Full is much more likely to appear than Partial.
+
+The variable Eliminations is quantitative
+```{r}
+countNA(Games$Eliminations) #gets NA count
+```
+
+Eliminations contains no NAs, so the summary statistics can be calculated directly
+
+```{r}
+Games_elim <-Games %>%
+  summarize(
+    total = sum(Eliminations),
+    mean = mean(Eliminations),
+    median = median(Eliminations)
+    
+  )
+
+kable(Games_elim)
+
+```
+
+
 
 
 ## Proposed Questions
@@ -94,7 +127,10 @@ kable(Games_FP)
 
 ## Question 2: Our Question
 
+## Code Appendix
+``` {r codeAppend, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 
+```
 
 
 
