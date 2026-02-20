@@ -175,7 +175,10 @@ ggplot(data = Games_choice,
                      y = count)) + 
   geom_col() + 
   coord_flip() + 
-  labs(title = "Counts of Maps Chosen")
+  labs(x = "Choice", 
+       y = "Count",
+       title = "Counts of Maps Chosen")
+
 ```
 
 We can see that out of the 25 different maps that were played on, most maps were played 5-10 times out of the 190 different games. Rush, Diesel, and Crossroads Strike were all played the most, 15 times each. Since this was the choice of what map to play, it either means that they came up the most when random maps were chosen to be a choice, or players prefer these maps and will choose them more often than the other map choice.
