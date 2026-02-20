@@ -20,6 +20,7 @@ library(ggplot2)
 library(readxl)
 library(lubridate)
 library(knitr)
+library(patchwork)
 
 # Functions
 countNA <- function(col){
@@ -93,7 +94,7 @@ ggplot(data = Games_FP,
   coord_polar("y", start = 0) +
   theme_void() +
     geom_text(aes(label = percent), position = position_stack(vjust = 0.5)) +
-  labs(subtitle = "n = 211")
+  labs(title = "Pie Chart of FullPartial", subtitle = "n = 211")
 ```
 
 From the above table and pie chart, we can see that Full is much more likely to appear than Partial.
@@ -111,70 +112,89 @@ Eliminations contains no NAs, so the summary statistics can be calculated direct
 Games_elim <-Games %>%
   summarize(
     total = sum(Eliminations),
+    mean = mean(Eliminations),
     min = min(Eliminations),
     Q1 = quantile(Eliminations, .25),
-    mean = mean(Eliminations),
+    median = median(Eliminations),
     Q3 = quantile(Eliminations, .75),
-    max = max(Eliminations),
-    median = median(Eliminations)
+    max = max(Eliminations)
+   
     
   )
 
 kable(Games_elim)
 
 ```
-```{r}
-ggplot(data = Games,
+
+```{r, fig.height=4, fig.width=9}
+elim_box <- ggplot(data = Games,
        mapping = aes(x = Eliminations)) +
   geom_boxplot() + 
-  labs(title = "Eliminations")
+  labs(title = "Eliminations Boxplot")
+
+elim_hist <- ggplot(data = Games,
+       mapping = aes(x = Eliminations)) +
+  geom_histogram(fill = "black", color = "grey") +
+  labs(title = "Eliminations Histogram")
+
+elim_box + elim_hist
 ```
+
 We can see that the eliminations variable has a positive, or right skew, with the mean and median being below the midpoint of the range of data. This lets us know that for most matches, this player is getting aroud 11 - 18 kills, with fewer matches getting in the high range of eliminations, with only two total matches above 30.
 
 ### Variable 3 - Choice
 
 The variable Choice is a categorical Variable.
+
 ```{r}
 levels(as.factor(Games$Choice)) #gets categories
 ```
+
 Choice has 25 different categories, representing the 25 different maps that this player played on.
 
 ```{r}
 countNA(as.factor(Games$Choice)) #gets NA count
 ```
+
 Choice has one NA, which should be filtered.
 
 ```{r}
-Games_Choice <- Games %>%
+Games_choice <- Games %>%
+  filter(!is.na(Choice)) %>%
   group_by(Choice) %>%
   summarize(
      count = sum(Choice == Choice),
      percent = paste0(round(sum(Choice == Choice)/nrow(Games)*100, 2), "%")
-  )
+  ) %>%
+  arrange(desc(count))
 
-Games_Choice <- Games_Choice %>%
-  filter(!is.na(Choice))
+kable(Games_choice)
 
-ggplot(data = Games_Choice,
-       mapping = aes(x = Choice, y = count)) + 
-  geom_boxplot() + 
+ggplot(data = Games_choice,
+       mapping = aes(x = reorder(Choice, count), 
+                     y = count)) + 
+  geom_col() + 
   coord_flip() + 
-  labs(subtitle = "n = 190")
+  labs(title = "Counts of Maps Chosen")
 ```
+
 We can see that out of the 25 different maps that were played on, most maps were played 5-10 times out of the 190 different games. Rush, Diesel, and Crossroads Strike were all played the most, 15 times each. Since this was the choice of what map to play, it either means that they came up the most when random maps were chosen to be a choice, or players prefer these maps and will choose them more often than the other map choice.
 
 ### Variable 4 - GameType
 
 The variable GameType is a categorical Variable
+
 ```{r}
 levels(as.factor(Games$GameType)) #gets categories
 ```
+
 GameType has 4 different categories.
 
 ```{r}
 countNA(as.factor(Games$GameType)) #gets NA count
 ```
-GameType has no NA's.
+
+GameType has no NAs
 
 ```{r}
 Games_Type <- Games %>%
@@ -190,39 +210,51 @@ ggplot(data = Games_Type,
   geom_bar(stat = "identity", width = 1) +
   coord_polar("y", start = 0) +
   theme_void() +
-    geom_text(aes(x = 1.8, label = percent), position = position_stack(vjust = 0.5), size = 2.5)
+    geom_text(aes(x = 1.8, label = percent), position = position_stack(vjust = .5), size = 2.5)
 ```
+
 From the pie chart, we can see that the most common game type by far is the team deathmatch (TDM) mode. The other three modes are far less likely, showing up only 7% of the time combined in all 211 matches.
 
 ### Variable 5 - Deaths
 
 The variable Deaths is quantitative
+
 ```{r}
 countNA(Games$Deaths) #gets NA count
 ```
-Deaths has no NA's
+
+Deaths has no NAs
 
 ```{r}
 Games_Deaths <-Games %>%
   summarize(
     total = sum(Deaths),
+    mean = mean(Deaths),
     min = min(Deaths),
     Q1 = quantile(Deaths, .25),
-    mean = mean(Deaths),
+    median = median(Deaths),
     Q3 = quantile(Deaths, .75),
     max = max(Deaths),
-    median = median(Deaths)
     
   )
 
-head(Games_Deaths)
+kable(Games_Deaths)
 ```
-```{r}
-ggplot(data = Games,
+
+```{r, fig.hight=4, fig.width=9}
+death_box <- ggplot(data = Games,
        mapping = aes(x = Deaths)) +
   geom_boxplot() + 
-  labs(title = "Deaths")
+  labs(title = "Deaths Boxplot")
+
+death_hist <- ggplot(data = Games,
+       mapping = aes(x = Deaths)) +
+  geom_histogram(fill = "black", color = "grey") +
+  labs(title = "Deaths Histogram")
+
+death_box + death_hist
 ```
+
 The boxplot shows that the data for deaths is right skewed, meaning that there are more outliers in the data corresponding to games with a lot of deahts. It is more common to have games with fewer deaths, as there are no outliers in the lower values. 50% of the games had deaths between 12 and 17 times.
 
 
