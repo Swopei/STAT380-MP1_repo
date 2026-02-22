@@ -261,27 +261,62 @@ death_box + death_hist
 The boxplot shows that the data for deaths is right skewed, meaning that there are more outliers in the data corresponding to games with a lot of deahts. It is more common to have games with fewer deaths, as there are no outliers in the lower values. 50% of the games had deaths between 12 and 17 times.
 
 
-
-
 ## Proposed List of Questions
 
-
 ### Question 1: Was this data collected from when the player first started playing the game, or from a specific period of when they played?
-
 
 ### Question 2: How was this player chosen, and was the data selected from every match or selected matches on each day?
 
 ### Question 3: What exactly does the variable "FullPartial" represent?
 
 
-
 ## Answering questions using the data
 
 ### Is the player’s performance, as quantified by the amount of experience points gained (TotalXP variable) changing over time?
+```{r}
+# Making the month from the Date variable
+Games_months <- Games %>%
+  mutate(Month = month(Date, label = TRUE, abbr = FALSE))
+
+month_order = c("June", "July", "August")
+Games_months$Month <- factor(Games_months$Month, levels = month_order)
+
+ggplot(data = Games_months,
+       mapping = aes(x = TotalXP,
+                     y = Month,
+                     fill = Month)) +
+  geom_boxplot() + 
+  coord_flip() +
+  scale_fill_manual(values = c("gold", "orange", "tomato")) + 
+  labs(title = "TotalXP Earned in Games by Month")
+
+Games_permonth <- Games_months %>%
+  group_by(Month) %>%
+  summarize(
+    Mean_TotalXP = mean(TotalXP),
+    Median_TotalXP = median(TotalXP)
+  )
+
+kable(Games_permonth)
+
+```
+
+From the above box plots and table of average month TotalXP, it is apparent that this player's average performance does not seem to increase or decrease over these three months. While the player's median and mean performance as measured by TotalXP decreases from June to July, they rise to back to similar levels in August.
 
 
 ### Does the map have any effect on the amount of eliminations and deaths?
 
 
 
+## Contributions
+
+Reading in data - Isaac Swope
+
+Variable Exploration - Split Work: Isaac and Andrew
+
+List of Questions - Andrew Loisele
+
+Player Performance by Month - Isaac Swope
+
+Map Effect on Eliminations and Deaths - 
 
