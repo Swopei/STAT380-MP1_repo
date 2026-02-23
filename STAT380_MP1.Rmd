@@ -276,7 +276,7 @@ The boxplot shows that the data for deaths is right skewed, meaning that there a
 ### Question 3: What exactly does the variable "FullPartial" represent?
 
 
-## Answering questions using the data
+## Answering Questions Using the Data
 
 ### Is the player’s performance, as quantified by the amount of experience points gained (TotalXP variable) changing over time?
 
