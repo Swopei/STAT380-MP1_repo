@@ -39,7 +39,7 @@ Games <- read_excel(games_tmp)
 
 This solution was found using Google Gemini, the prompt used was, "How can a .xlsx file be read into R from an url?"
 
-Gemini generation the following as one possible solution: 
+Gemini generated the following as one possible solution: 
 
 library(readxl)
 
@@ -65,6 +65,7 @@ This data set contains 27 columns and 211 rows.
 ### Variable 1 - FullPartial
 
 The variable FullPartial is a categorical variable
+
 ```{r}
 levels(as.factor(Games$FullPartial)) #gets categories
 ```
@@ -99,9 +100,11 @@ ggplot(data = Games_FP,
 
 From the above table and pie chart, we can see that Full is much more likely to appear than Partial. Full is almost ten times more frequent than partial.
 
+
 ### Variable 2 - Eliminations
 
 The variable Eliminations is quantitative
+
 ```{r}
 countNA(Games$Eliminations) #gets NA count
 ```
@@ -140,7 +143,8 @@ elim_hist <- ggplot(data = Games,
 elim_box + elim_hist
 ```
 
-We can see that the eliminations variable has a positive, or right skew, with the mean and median being below the midpoint of the range of data. This lets us know that for most matches, this player is getting aroud 11 - 18 kills, with fewer matches getting in the high range of eliminations, with only two total matches above 30.
+We can see that the eliminations variable has a positive skew, or right skew, with the mean and median being below the midpoint of the range of data. This lets us know that for most matches, this player is getting aroud 11 - 18 kills, with fewer matches getting in the high range of eliminations, with only two total matches above 30.
+
 
 ### Variable 3 - Choice
 
@@ -183,6 +187,7 @@ ggplot(data = Games_choice,
 ```
 
 We can see that out of the 25 different maps that were played on, most maps were played 5-10 times out of the 190 different games. Rush, Diesel, and Crossroads Strike were all played the most, 15 times each. Since this was the choice of what map to play, it either means that they came up the most when random maps were chosen to be a choice, or players prefer these maps and will choose them more often than the other map choice.
+
 
 ### Variable 4 - GameType
 
@@ -274,6 +279,7 @@ The boxplot shows that the data for deaths is right skewed, meaning that there a
 ## Answering questions using the data
 
 ### Is the player’s performance, as quantified by the amount of experience points gained (TotalXP variable) changing over time?
+
 ```{r}
 # Making the month from the Date variable
 Games_months <- Games %>%
@@ -368,9 +374,8 @@ Reading in data - Isaac Swope
 
 Variable Exploration - Split Work: Isaac and Andrew
 
-List of Questions - Andrew Loisele
+List of Questions - Andrew Loiselle
 
 Answer Questions - Isaac Swope
 
-Overview and Cleanup - Andrew Loisele
-
+Overview and Cleanup - Andrew Loiselle
