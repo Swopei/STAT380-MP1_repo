@@ -2,7 +2,7 @@
 title: "STAT380_MP1"
 author:
 - name: Isaac Swope
-- name: Andrew Loisele
+- name: Andrew Loiselle
 date: "February 22, 2026"
 output: html_document
 ---
